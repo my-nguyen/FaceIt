@@ -8,6 +8,8 @@
 
 import UIKit
 
+// @IBDesignable draws the face onto the ViewController
+@IBDesignable
 class FaceView: UIView {
 
     // these ratios are pre-calculated by the professor
@@ -24,10 +26,23 @@ class FaceView: UIView {
         case Right
     }
 
-    var scale: CGFloat = 0.90
-    var mouthCurvature: Double = 1.0 // 1 full smile, -1 full frown
-    var eyesOpen: Bool = true
-    var eyeBrowTilt: Double = 0.0 // -1 full furrow, 1 fully relaxed
+    // @IBInspectable adds property to the Story Board's attributes inspector
+    // but type must be explicitly declared
+    // also, call setNeedsDisplay() to force redraw
+    @IBInspectable
+    var scale: CGFloat = 0.90 { didSet { setNeedsDisplay() } }
+    // 1 full smile, -1 full frown
+    @IBInspectable
+    var mouthCurvature: Double = 1.0 { didSet { setNeedsDisplay() } }
+    @IBInspectable
+    var eyesOpen: Bool = false { didSet { setNeedsDisplay() } }
+    // -1 full furrow, 1 fully relaxed
+    @IBInspectable
+    var eyeBrowTilt: Double = -0.5 { didSet { setNeedsDisplay() } }
+    @IBInspectable
+    var color: UIColor = UIColor.blueColor() { didSet { setNeedsDisplay() } }
+    @IBInspectable
+    var lineWidth: CGFloat = 5.0 { didSet { setNeedsDisplay() } }
 
     // can't use rect since it's just an optimization
     // can't use frame since it's the rectangle that contains this FaceView in the superview coordinates
@@ -42,7 +57,7 @@ class FaceView: UIView {
 
     override func drawRect(rect: CGRect) {
         // UIColor.set() set both fill and stroke
-        UIColor.blueColor().set()
+        color.set()
         pathForCircle(skullCenter, withRadius: skullRadius).stroke()
         pathForEye(.Left).stroke()
         pathForEye(.Right).stroke()
@@ -53,7 +68,7 @@ class FaceView: UIView {
 
     private func pathForCircle(midPoint: CGPoint, withRadius radius: CGFloat) -> UIBezierPath {
         let path = UIBezierPath(arcCenter: midPoint, radius: radius, startAngle: 0.0, endAngle: CGFloat(2*M_PI), clockwise: true)
-        path.lineWidth = 5.0
+        path.lineWidth = lineWidth
         return path
     }
 
@@ -68,7 +83,7 @@ class FaceView: UIView {
             let path = UIBezierPath()
             path.moveToPoint(CGPoint(x: centre.x - radius, y: centre.y))
             path.addLineToPoint(CGPoint(x: centre.x + radius, y: centre.y))
-            path.lineWidth = 5.0
+            path.lineWidth = lineWidth
             return path
         }
     }
@@ -88,7 +103,7 @@ class FaceView: UIView {
         let path = UIBezierPath()
         path.moveToPoint(start)
         path.addLineToPoint(end)
-        path.lineWidth = 5.0
+        path.lineWidth = lineWidth
         return path
     }
 
@@ -105,7 +120,7 @@ class FaceView: UIView {
         let path = UIBezierPath()
         path.moveToPoint(start)
         path.addCurveToPoint(end, controlPoint1: control1, controlPoint2: control2)
-        path.lineWidth = 5.0
+        path.lineWidth = lineWidth
         return path
     }
 
