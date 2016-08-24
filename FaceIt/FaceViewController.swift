@@ -21,12 +21,29 @@ class FaceViewController: UIViewController {
             // add pinch gesture recognizer
             let pinch = UIPinchGestureRecognizer(target: faceView, action: #selector(FaceView.changeScale(_:)))
             faceView.addGestureRecognizer(pinch)
+
+            // add swipe up for happiness and down for sadness
+            let happySwipe = UISwipeGestureRecognizer(target: self, action: #selector(increaseHappiness))
+            happySwipe.direction = .Up
+            faceView.addGestureRecognizer(happySwipe)
+            let sadSwipe = UISwipeGestureRecognizer(target: self, action: #selector(decreaseHappiness))
+            sadSwipe.direction = .Down
+            faceView.addGestureRecognizer(sadSwipe)
+
             updateUI()
         }
     }
     private var mouthCurvatures = [FacialExpression.Mouth.Frown: -1.0, .Grin: 0.5, .Smile: 1.0, .Smirk:-0.5, .Neutral: 0.0]
     private var eyeBrowTilts = [FacialExpression.EyeBrows.Relaxed: 0.5, .Furrowed: -0.5, .Normal: 0.0]
 
+    func increaseHappiness() {
+        expression.mouth = expression.mouth.happierMouth()
+    }
+
+    func decreaseHappiness() {
+        expression.mouth = expression.mouth.sadderMouth()
+    }
+    
     private func updateUI() {
         switch expression.eyes {
         case .Open: faceView.eyesOpen = true
