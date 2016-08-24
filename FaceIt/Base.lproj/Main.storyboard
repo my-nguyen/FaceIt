@@ -42,6 +42,9 @@
                             <constraint firstItem="NQE-4o-LtX" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="dqo-5u-hgm"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="faceView" destination="NQE-4o-LtX" id="0iU-CX-J27"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
