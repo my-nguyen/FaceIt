@@ -43,7 +43,18 @@ class FaceViewController: UIViewController {
     func decreaseHappiness() {
         expression.mouth = expression.mouth.sadderMouth()
     }
-    
+
+    // method that opens or closes the eyes upon a tap
+    @IBAction func toggleEyes(sender: UITapGestureRecognizer) {
+        if sender.state == .Ended {
+            switch expression.eyes {
+            case .Open: expression.eyes = .Closed
+            case .Closed: expression.eyes = .Open
+            case .Squinting: break
+            }
+        }
+    }
+
     private func updateUI() {
         switch expression.eyes {
         case .Open: faceView.eyesOpen = true
