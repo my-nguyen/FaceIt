@@ -66,6 +66,17 @@ class FaceView: UIView {
         pathForBrow(.Right).stroke()
     }
 
+    func changeScale(recognizer: UIPinchGestureRecognizer) {
+        switch recognizer.state {
+        case .Changed, .Ended:
+            // reset this class' scale property and the recognizer's scale property
+            scale *= recognizer.scale
+            recognizer.scale = 1.0
+        default:
+            break
+        }
+    }
+
     private func pathForCircle(midPoint: CGPoint, withRadius radius: CGFloat) -> UIBezierPath {
         let path = UIBezierPath(arcCenter: midPoint, radius: radius, startAngle: 0.0, endAngle: CGFloat(2*M_PI), clockwise: true)
         path.lineWidth = lineWidth
